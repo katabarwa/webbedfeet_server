@@ -1,0 +1,41 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Webbed Feet server",
+  "main": "dist/server.js",
+  "scripts": {
+    "start": "node --unhandled-rejections=strict dist/server.js",
+    "postinstall": "tsc",
+    "server": "nodemon server.ts",
+    "dev": "npm run server",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ./"
+  },
+  "engines": {
+    "node": "14.15.0"
+  },
+  "keywords": [
+    "webbed feet",
+    "server"
+  ],
+  "author": "Uneku Idumajogu",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.9",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.5",
+    "cryptr": "^6.0.2",
+    "date-fns": "^2.21.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.2",
+    "sane-email-validation": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/node": "^14.14.14",
+    "@types/sane-email-validation": "^1.1.0",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
+  }
+}
