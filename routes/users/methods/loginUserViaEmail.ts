@@ -31,12 +31,10 @@ const loginUserViaEmail = async (req: Request, res: Response) => {
 
   //Validate if password is at least 6 characters
   if (!validatePassword(password))
-    return res
-      .status(400)
-      .json({
-        success: false,
-        message: "Password must be at least 6 characters",
-      });
+    return res.status(400).json({
+      success: false,
+      message: "Password must be at least 6 characters",
+    });
 
   //Begin user login
   try {
@@ -91,7 +89,7 @@ const loginUserViaEmail = async (req: Request, res: Response) => {
       token: userSessionData.userSessionToken,
     });
   } catch (error) {
-    //Log error and return error on catch error
+    //Log error and return error on catch
     console.error(`loginUserViaEmail: ${error.message}`);
     res.status(500).json({ success: false, message: "Failed to login user" });
   }

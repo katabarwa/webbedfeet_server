@@ -108,7 +108,7 @@ const changeUserPassword = async (req: Request, res: Response) => {
       });
     }
   } catch (error) {
-    //Log error and return error on catch error
+    //Log error and return error on catch
     console.error(`changeUserPassword: ${error}`);
     res
       .status(500)

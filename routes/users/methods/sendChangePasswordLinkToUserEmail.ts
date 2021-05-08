@@ -70,7 +70,7 @@ const sendChangePasswordLinkToUserEmail = async (
       message: "Password reset link sent successfully",
     });
   } catch (error) {
-    //Log error and return error on catch error
+    //Log error and return error on catch
     console.error(`sendChangePasswordLinkToUserEmail : ${error}`);
     return res.json({
       success: true,

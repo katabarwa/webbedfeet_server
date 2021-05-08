@@ -20,7 +20,7 @@ const getUserProfile = async (req: Request, res: Response) => {
       data: userTokenData.user,
     });
   } catch (err) {
-    //Log error and return error on catch error
+    //Log error and return error on catch
     console.error(`getUser: ${err}`);
     res
       .status(500)
