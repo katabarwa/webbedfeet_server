@@ -4,6 +4,7 @@ import express, { Request, Response } from "express";
 import connectDB from "./config/db";
 import userRoute from "./routes/users";
 import showsRoute from "./routes/shows";
+import peopleRoute from "./routes/people";
 import cookieParser from "cookie-parser";
 
 const app = express();
@@ -20,6 +21,8 @@ app.use(cookieParser());
 //routes;
 app.use("/user", userRoute);
 app.use("/shows", showsRoute);
+app.use("/people", peopleRoute);
+app.use("/person", peopleRoute);
 
 // Return a message to the browser to show server is up and running
 app.get("/", (req: Request, res: Response) =>

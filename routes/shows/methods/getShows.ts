@@ -5,16 +5,6 @@ import Show from "../../../models/Show";
 //Optional: query parameters
 const getShows = async (req: Request, res: Response) => {
   try {
-    //Check if user token data exists (added from the authorization middleware)
-    const userTokenData = req.userTokenData;
-
-    if (!userTokenData) {
-      return res.status(400).json({
-        success: false,
-        message: "User authorization token is not valid",
-      });
-    }
-
     //Retrieve shows
     const shows: any = await Show.find();
 
