@@ -87,6 +87,7 @@ const loginUserViaEmail = async (req: Request, res: Response) => {
       success: true,
       message: "User login successfully",
       token: userSessionData.userSessionToken,
+      data: user,
     });
   } catch (error) {
     //Log error and return error on catch
