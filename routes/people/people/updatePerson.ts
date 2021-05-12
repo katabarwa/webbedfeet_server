@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Person from "../../../models/Person";
 
-//Create new person in to the db
+//Update person in the db based on id
 /*
     Request body = {
         name: string <required>,
@@ -9,7 +9,7 @@ import Person from "../../../models/Person";
         base64Image: base64 string <optional>
     }
  */
-const createPerson = async (req: Request, res: Response) => {
+const updatePerson = async (req: Request, res: Response) => {
   //Check if user token data exists (added from the authorization middleware)
   const userTokenData = req.userTokenData;
 
@@ -27,22 +27,34 @@ const createPerson = async (req: Request, res: Response) => {
       .json({ success: false, message: "No data was sent to the server" });
   }
 
-  //De-structure the request body properties
-  let { name, connections = [], base64Image = null } = req.body;
-
-  if (name === "" || !name) {
+  //Check if request has id params
+  if (!req.params.id) {
     return res
       .status(400)
-      .json({ success: false, message: "Name of person is required" });
+      .json({ success: false, message: "No person id received" });
   }
+  const personID = req.params.id;
+
+  //De-structure the request body properties
+  let { name, connections = [], base64Image } = req.body;
 
   try {
+    //Check if person exists
+    const existingPerson: any = await Person.findOne({
+      _id: personID,
+    });
+    if (!existingPerson) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Person to update does not exist" });
+    }
+
     //check if name exists
     if (name) {
       const existingPersonWithName: any = await Person.findOne({
         name,
       });
-      if (existingPersonWithName) {
+      if (existingPersonWithName?._id !== personID) {
         return res.status(400).json({
           success: false,
           message: `Person with name - ${name} already exist`,
@@ -60,36 +72,39 @@ const createPerson = async (req: Request, res: Response) => {
       connections = existingPersons;
     }
 
-    //Create default person image url from gravatar
-    const personImageURL = `https://ui-avatars.com/api/?name=${name
-      .split(" ")
-      .join("+")}&rounded=true&background=1F1F1F&color=000000&size=512`;
-
-    //Generate new person data
-    const newPersonData = {
-      name,
-      connections,
-      imageURL: personImageURL,
+    //Generate updated person data
+    const updatedPersonData: any = {
       createdByUserID: userTokenData.user.id,
       updatedByUserID: userTokenData.user.id,
     };
 
-    //Create new person in db
-    const newPerson = new Person(newPersonData);
-    await newPerson.save();
+    if (name) updatedPersonData.name = name;
+    if (connections) updatedPersonData.name = connections;
+
+    //Update person
+    await Person.findOneAndUpdate(
+      {
+        _id: personID,
+      },
+      {
+        $set: {
+          ...updatedPersonData,
+        },
+      }
+    );
 
     //Return success
     return res.json({
       success: true,
-      message: "New person created successfully",
+      message: "Person updated successfully",
     });
   } catch (err) {
     //Log error and return error on catch
-    console.error(`createPerson: ${err}`);
+    console.error(`updatePerson: ${err}`);
     res
       .status(500)
       .json({ success: false, message: "Failed to create person" });
   }
 };
 
-export default createPerson;
+export default updatePerson;
