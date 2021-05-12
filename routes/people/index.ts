@@ -1,6 +1,7 @@
 import express from "express";
 import authorization from "../../middleware/authorization";
 import createPerson from "./people/createPerson";
+import deletePerson from "./people/deletePerson";
 import getPeople from "./people/getPeople";
 import updatePerson from "./people/updatePerson";
 
@@ -29,7 +30,7 @@ router.post("/create", authorization, createPerson);
 // @route     PATCH api/person/update/:id
 // @desc      Update person by id
 // @access    Private
-// @required  Request body
+// @required  Request body and Request params - :id
 /*
     Request body = {
         name: string <required>,
@@ -37,6 +38,12 @@ router.post("/create", authorization, createPerson);
         image: base64 string <optional>
     }
  */
-router.post("/update/:id", authorization, updatePerson);
+router.patch("/update/:id", authorization, updatePerson);
+
+// @route     DELETE api/person/delete/:id
+// @desc      Delete person by id
+// @access    Private
+// @required  Request params - :id
+router.delete("/delete/:id", authorization, deletePerson);
 
 export default router;

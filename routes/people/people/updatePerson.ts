@@ -54,7 +54,7 @@ const updatePerson = async (req: Request, res: Response) => {
       const existingPersonWithName: any = await Person.findOne({
         name,
       });
-      if (existingPersonWithName?._id !== personID) {
+      if (existingPersonWithName?._id?.toString() !== personID?.toString()) {
         return res.status(400).json({
           success: false,
           message: `Person with name - ${name} already exist`,
@@ -74,12 +74,11 @@ const updatePerson = async (req: Request, res: Response) => {
 
     //Generate updated person data
     const updatedPersonData: any = {
-      createdByUserID: userTokenData.user.id,
       updatedByUserID: userTokenData.user.id,
     };
 
     if (name) updatedPersonData.name = name;
-    if (connections) updatedPersonData.name = connections;
+    if (connections) updatedPersonData.connections = connections;
 
     //Update person
     await Person.findOneAndUpdate(
@@ -88,6 +87,7 @@ const updatePerson = async (req: Request, res: Response) => {
       },
       {
         $set: {
+          ...existingPerson._doc,
           ...updatedPersonData,
         },
       }
@@ -103,7 +103,7 @@ const updatePerson = async (req: Request, res: Response) => {
     console.error(`updatePerson: ${err}`);
     res
       .status(500)
-      .json({ success: false, message: "Failed to create person" });
+      .json({ success: false, message: "Failed to update person" });
   }
 };
 
