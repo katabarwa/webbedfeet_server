@@ -3,3 +3,9 @@ export interface TUserTokenData {
   token?: string;
   expiry: Date;
 }
+
+export interface TAudioConfigData {
+  links: string;
+  people: string[];
+  timeInterval: { from: number; to: number };
+}

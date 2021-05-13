@@ -65,6 +65,8 @@ const updatePerson = async (req: Request, res: Response) => {
     //Check if connections are valid user IDs and exists
     const existingPersons: any = await Person.find({
       _id: { $in: connections },
+    }).select({
+      _id: 1,
     });
 
     //Set new connections IDs to those that match from the DB

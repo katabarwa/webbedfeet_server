@@ -56,7 +56,7 @@ const getPeople = async (req: Request, res: Response) => {
     return res.json({
       success: true,
       message: "Shows retrieved successfully",
-      data: peopleWithDetails,
+      data: peopleWithDetails.reverse(),
     });
   } catch (err) {
     //Log error and return error on catch
